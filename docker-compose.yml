@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  graph:
+    build:
+      context: .
+    environment:
+      POSTGRES_HOST: 'postgresdb'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'admin'
+      POSTGRES_NAME: 'devtrivia'
+      POSTGRES_PORT: '5432'
+      REDIS_HOST: 'redisdb'
+      FRONTEND_URL: ''
+      SECRET: 'asdfasdf'
+
+    depends_on:
+      - postgresdb
+      - redisdb
+    ports:
+      - '4000:4000'
+    volumes:
+      - .:/usr/src
+      - /usr/src/node_modules
+
+  postgresdb:
+    image: postgres
+    volumes:
+      - graphtypeserver-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 'admin'
+
+  redisdb:
+    image: redis
+    volumes:
+      - graphtypeserver-redis:/data
+
+volumes:
+  graphtypeserver-postgres:
+    driver: local
+  graphtypeserver-redis:
+    driver: local
