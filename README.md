@@ -1,2 +1,18 @@
-# graphql-typescript-server-boilerplate
-A graphql api with typescript ready for you to clone it and have a fast launch
+# DevTrivia
+Just the best trivia for every software engineer
+
+### Requirements:
+
+ - Docker
+ - A browser
+
+### How to start!
+
+  - Make a clone of this repository
+  - CD into the folder of the project
+  - run ```docker-compose up -d```
+  - Go to your browser on localhost:4000 and enjoy
+
+##### Other commentaries:
+
+ - To see the app logs run ```docker-compose logs -f```
