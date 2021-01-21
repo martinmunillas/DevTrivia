@@ -1,5 +1,6 @@
 import { User } from "../../entities/User";
 import { InputType, Field, ObjectType } from "type-graphql";
+import { FieldError } from "../../types";
 
 @InputType()
 export class UserInput {
@@ -15,15 +16,6 @@ export class FullUserInput extends UserInput {
   username?: string;
   @Field(() => String, { nullable: true })
   name?: string;
-}
-
-@ObjectType()
-export class FieldError {
-  @Field()
-  field!: string;
-
-  @Field()
-  message!: string;
 }
 
 @ObjectType()

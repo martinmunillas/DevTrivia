@@ -5,6 +5,7 @@ import {
   BaseEntity,
   OneToMany,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { Field, ObjectType } from 'type-graphql';
@@ -24,9 +25,10 @@ export class Topic extends BaseEntity {
 
   @Field(() => [Question])
   @OneToMany(() => Question, (question) => question.topic)
-  questions!: Question[];
+  questions?: Question[];
 
   @Field(() => Ranking)
-  @OneToOne(() => Ranking, (ranking) => ranking.topic)
-  ranking!: Ranking;
+  @OneToOne(() => Ranking)
+  @JoinColumn()
+  ranking?: Ranking;
 }

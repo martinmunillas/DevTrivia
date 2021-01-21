@@ -3,7 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  OneToOne,
   ManyToOne,
 } from 'typeorm';
 
@@ -26,7 +25,11 @@ export class Position extends BaseEntity {
   @Column({ type: 'int' })
   points!: number;
 
+  @Field(() => Int)
+  @Column({ type: 'int' })
+  seconds!: number;
+
   @Field(() => Ranking)
-  @OneToOne(() => Ranking, (ranking) => ranking.positions)
+  @ManyToOne(() => Ranking, (ranking) => ranking.positions)
   ranking!: Ranking;
 }

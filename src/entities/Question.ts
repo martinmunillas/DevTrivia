@@ -26,11 +26,11 @@ export class Question extends BaseEntity {
   @Column({ unique: true })
   statement!: string;
 
-  @Field()
-  @Column()
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   image?: string;
 
   @Field(() => [Answer])
   @OneToMany(() => Answer, (answer) => answer.question)
-  answers!: Answer[];
+  answers?: Answer[];
 }

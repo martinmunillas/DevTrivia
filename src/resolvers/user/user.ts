@@ -6,7 +6,6 @@ import {
   Query,
   Resolver,
   Root,
-  UseMiddleware,
 } from 'type-graphql';
 import argon2 from 'argon2';
 
@@ -15,19 +14,15 @@ import { User } from '../../entities/User';
 import { cookieSession } from '../../constants';
 import { generateUsername } from '../../utils/generateUsername';
 import { emailIsValid, passwordIsValid } from '../../utils/fieldValidators';
-import { isAuth } from '../../middleware/auth';
 import { UserResponse, FullUserInput, FieldError, UserInput } from './types';
 
 @Resolver(User)
 export class UserResolver {
-  // This makes email hidden to other users than
-  // themselves, remove this resolver to erase this behavior
   @FieldResolver(() => String)
   email(@Root() user: User, @Ctx() { req }: MyContext) {
     return user.id === req.session.userId ? user.email : '';
   }
 
-  // Register or sign up if you will
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: FullUserInput,
@@ -72,8 +67,6 @@ export class UserResolver {
       email: options.email,
     }).save();
 
-    // The line below logs the user in right after
-    // signin up, remove it to remove the behavior
     req.session.userId = user.id;
 
     return { user };
@@ -104,9 +97,11 @@ export class UserResolver {
   }
 
   // Gets the user info
-  @UseMiddleware(isAuth)
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
+    if (!req.session.userId) {
+      return undefined;
+    }
     return await User.findOne(req.session.userId);
   }
 

@@ -17,6 +17,7 @@ import { Answer } from './entities/Answer';
 import { Ranking } from './entities/Ranking';
 import { Position } from './entities/Position';
 import { Question } from './entities/Question';
+import { TopicResolver } from './resolvers/topic/topic';
 
 const main = async () => {
   const app = express();
@@ -70,7 +71,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, TopicResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res, redis }),
