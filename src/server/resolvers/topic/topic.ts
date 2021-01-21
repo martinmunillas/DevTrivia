@@ -5,7 +5,6 @@ import { Question } from '../../entities/Question';
 import { Ranking } from '../../entities/Ranking';
 
 import { Topic } from '../../entities/Topic';
-import { User } from '../../entities/User';
 import { MyContext } from '../../types';
 import { RankingResponse, TopicResponse, TriviaResponse } from './types';
 

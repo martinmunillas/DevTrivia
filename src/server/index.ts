@@ -7,7 +7,6 @@ import redisConnect from 'connect-redis';
 import cors from 'cors';
 import { createConnection } from 'typeorm';
 
-import { HelloResolver } from './resolvers/hello';
 import { UserResolver } from './resolvers/user/user';
 import { MyContext } from './types';
 import { cookieSession, __prod__ } from './constants';
@@ -67,11 +66,11 @@ const main = async () => {
     })
   );
 
-  app.use((req, res, next) => next());
+  app.use((_req, _res, next) => next());
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, TopicResolver],
+      resolvers: [UserResolver, TopicResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res, redis }),

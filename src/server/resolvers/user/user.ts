@@ -9,12 +9,13 @@ import {
 } from 'type-graphql';
 import argon2 from 'argon2';
 
-import { MyContext } from '../../types';
-import { User } from '../../entities/User';
 import { cookieSession } from '../../constants';
-import { generateUsername } from '../../utils/generateUsername';
+import { User } from '../../entities/User';
+import { MyContext, FieldError } from '../../types';
 import { emailIsValid, passwordIsValid } from '../../utils/fieldValidators';
-import { UserResponse, FullUserInput, FieldError, UserInput } from './types';
+import { generateUsername } from '../../utils/generateUsername';
+import { UserResponse, FullUserInput, UserInput } from './types';
+
 
 @Resolver(User)
 export class UserResolver {
