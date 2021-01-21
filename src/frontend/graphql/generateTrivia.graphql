@@ -1,0 +1,7 @@
+query GenerateTrivia($topicId: Int!){
+  generateTrivia(topicId: $topicId) {
+    questions {
+      id
+    }
+  }
+}

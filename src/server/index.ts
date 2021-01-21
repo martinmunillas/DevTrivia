@@ -17,6 +17,7 @@ import { Ranking } from './entities/Ranking';
 import { Position } from './entities/Position';
 import { Question } from './entities/Question';
 import { TopicResolver } from './resolvers/topic/topic';
+import { sendApp } from './middleware/sendApp';
 
 const main = async () => {
   const app = express();
@@ -66,8 +67,6 @@ const main = async () => {
     })
   );
 
-  app.use((_req, _res, next) => next());
-
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, TopicResolver],
@@ -82,6 +81,9 @@ const main = async () => {
       origin: false,
     },
   });
+
+  app.use(express.static(__dirname + '/public'));
+  app.use(sendApp());
 
   app.listen(4000, () => {
     console.log(`Server listening on port ${4000}`);

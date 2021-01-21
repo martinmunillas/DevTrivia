@@ -1,0 +1,3 @@
+mutation SendResults($topicId: Int!, $questions: [Int!]!, $answers: [Int!]!, $seconds: Int!){
+  sendResults(topicId: $topicId, questions: $questions, answers: $answers, seconds: $seconds)
+}

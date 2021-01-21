@@ -1,0 +1,10 @@
+query GetQuestion($id: Int!){
+  getQuestion(id: $id) {
+    id
+    statement
+    answers {
+      id
+      message
+    }
+  }
+}

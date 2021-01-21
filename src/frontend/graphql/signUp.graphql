@@ -1,0 +1,16 @@
+mutation SignUp($email: String!, $password: String!, $username: String){
+  register(options: {
+    email: $email
+    password: $password
+    username: $username
+  }) {
+    user {
+      id
+      username
+    }
+    errors {
+      field
+      message
+    }   
+  }
+}

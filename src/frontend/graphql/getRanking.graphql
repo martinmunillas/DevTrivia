@@ -1,0 +1,17 @@
+query GetRanking($id: Int!){
+  getRanking(id: $id) {
+    topic {
+      name
+    }
+    ranking {
+      positions {
+        id
+        points
+        seconds
+        user {
+          username
+        }
+      }
+    }
+  }
+}

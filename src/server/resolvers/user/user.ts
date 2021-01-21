@@ -16,7 +16,6 @@ import { emailIsValid, passwordIsValid } from '../../utils/fieldValidators';
 import { generateUsername } from '../../utils/generateUsername';
 import { UserResponse, FullUserInput, UserInput } from './types';
 
-
 @Resolver(User)
 export class UserResolver {
   @FieldResolver(() => String)
@@ -79,21 +78,30 @@ export class UserResolver {
     @Arg('options') options: UserInput,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
+    const errors: FieldError[] = [];
     const user = await User.findOne({ where: { email: options.email } });
-    if (!user) {
-      return {
-        errors: [{ field: 'email', message: "That email doesn't exist" }],
-      };
+    if (!options.email) {
+      errors.push({ field: 'email', message: 'Please insert an email' });
+    } else if (!emailIsValid(options.email)) {
+      errors.push({ field: 'email', message: 'Please insert a valid email' });
+    } else if (!user) {
+      errors.push({
+        field: 'email',
+        message: "That email doesn't exists",
+      });
     }
-    const valid = await argon2.verify(user.password, options.password);
+    if (errors.length) return { errors };
+
+    const valid = await argon2.verify(user!.password, options.password);
     if (!valid) {
       return {
         errors: [{ field: 'password', message: 'Incorrect password' }],
       };
     }
+    if (errors.length) return { errors };
 
     // Actually logs the user in
-    req.session.userId = user.id;
+    req.session.userId = user!.id;
     return { user };
   }
 
