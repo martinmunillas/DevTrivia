@@ -8,6 +8,12 @@ RUN yarn
 
 COPY [".", "/usr/src/"]
 
-EXPOSE 3000
+RUN ["yarn", "type"]
 
-CMD ["yarn", "dev"]
+RUN ["yarn", "build"]
+
+EXPOSE 4000
+
+ENV NODE_ENV=production
+
+CMD ["yarn", "start"]

@@ -5,10 +5,23 @@ import { parseTime } from '../../utils/funcs/parseTime';
 const Style = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  justify-content: splace-between;
+  width: 100%;
+  margin: 10px 0;
   p {
-    margin: 0 10px;
+    &:first-child {
+      width: 15%;
+    }
+    &:nth-child(2) {
+      width: 45%;
+      overdflow: hidden;
+    }
+    &:nth-child(3) {
+      width: 20%;
+    }
+    &:nth-child(4) {
+      width: 20%;
+    }
   }
 `;
 
@@ -22,8 +35,6 @@ interface PositionProps {
 }
 
 const Position: React.FC<PositionProps> = ({ user, points, seconds, pos }) => {
-  
-
   return (
     <Style>
       <p>{pos ? pos : ''}</p>

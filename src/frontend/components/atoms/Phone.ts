@@ -12,5 +12,4 @@ export const Phone = styled.div`
   max-width: 90vw;
   border-radius: 60px;
   box-shadow: 14px 13px 38px 6px rgba(0, 0, 0, 0.78);
-  overflow: scroll;
 `;

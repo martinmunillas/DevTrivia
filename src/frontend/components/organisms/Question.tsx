@@ -50,12 +50,20 @@ const Rounded = styled.div`
   }
 `;
 
+const Statement = styled.h2`
+  margin: 10px 0;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+`;
+
 interface QuestionProps {
   next: (prev?: number) => void;
   setSelected: (aid: number) => void;
   selected: number;
   time: number;
   id: number;
+  number: number[];
   skip: boolean;
 }
 
@@ -66,6 +74,7 @@ const Question: React.FC<QuestionProps> = ({
   time,
   id,
   skip,
+  number,
 }) => {
   const { data, loading } = useGetQuestionQuery({
     variables: { id },
@@ -81,7 +90,10 @@ const Question: React.FC<QuestionProps> = ({
         <p>{parseTime(time)}</p>
         <TimeLeft time={time}></TimeLeft>
       </Rounded>
-      <Title>{data?.getQuestion?.statement}</Title>
+      <Title>
+        Question {number[0]}/{number[1]}
+      </Title>
+      <Statement>{data?.getQuestion?.statement}</Statement>
       {data?.getQuestion?.answers.map((answer) =>
         answer.id === selected ? (
           <Selected key={answer.id}>{answer.message}</Selected>

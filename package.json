@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -L dist/server/index.js",
-    "buildAll": "tsc; webpack-cli --config webpack.config.js",
     "start": "node dist/server/index.js",
-    "type": "tsc -w",
-    "build": "webpack-cli --config webpack.config.js --mode development --watch",
+    "type": "tsc",
+    "type:dev": "tsc -w",
+    "build": "webpack-cli --config webpack.config.js",
+    "build:dev": "webpack-cli --config webpack.config.js --mode development --watch",
     "gen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],

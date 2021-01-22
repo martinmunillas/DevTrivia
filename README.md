@@ -20,18 +20,18 @@ Tyescript, React, Graphql, ApolloClient, Docker, PostgresQL, Redis
 
  - To see the app logs run ```docker-compose logs -f```
  - This was a project created for Nicolas Schurman's Challenge https://www.youtube.com/watch?v=aouDQ8caJYg
-  - UI inspired by https://dribbble.com/shots/6508352-Quiz-App-UI-Oma/attachments/6508352-Quiz-App-UI-Oma?mode=media 
+ - UI inspired by https://dribbble.com/shots/6508352-Quiz-App-UI-Oma/attachments/6508352-Quiz-App-UI-Oma?mode=media 
 
  #### TODO:
 
- [X] SignIn/SignUp
+ - [X] SignIn/SignUp
 
- [X] Topics
+ - [X] Topics
 
- [x] Answer 20 Questions
+ - [x] Answer 20 Questions
 
- [x] Congrats Message
+ - [x] Congrats Message
 
- [x] Total Time
+ - [x] Total Time
 
- [x] Ranking
+ - [x] Ranking

@@ -126,6 +126,7 @@ const Trivia: React.FC<TriviaProps> = ({}) => {
           id={questions[page - 1]}
           skip={isFirstPage || isLastPage || isCongratsPage}
           time={time}
+          number={[page, questions.length]}
         />
       </Box>
     );

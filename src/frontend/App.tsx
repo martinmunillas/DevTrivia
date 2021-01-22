@@ -13,6 +13,7 @@ import SignUp from './pages/SignUp';
 import Ranking from './pages/Ranking';
 import Trivia from './pages/Trivia';
 import User from './components/organisms/User';
+import { Scroller } from './components/atoms/Scroller';
 
 const history = createBrowserHistory();
 
@@ -32,13 +33,15 @@ const App = () => {
             <BrowserRouter>
               <Middlewares />
               <User />
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route exact path='/sign-in' component={SignIn} />
-                <Route exact path='/sign-up' component={SignUp} />
-                <Route exact path='/r/:topicId' component={Ranking} />
-                <Route exact path='/t/:topicId' component={Trivia} />
-              </Switch>
+              <Scroller>
+                <Switch>
+                  <Route exact path='/' component={Home} />
+                  <Route exact path='/sign-in' component={SignIn} />
+                  <Route exact path='/sign-up' component={SignUp} />
+                  <Route exact path='/r/:topicId' component={Ranking} />
+                  <Route exact path='/t/:topicId' component={Trivia} />
+                </Switch>
+              </Scroller>
             </BrowserRouter>
           </Router>
         </ApolloProvider>

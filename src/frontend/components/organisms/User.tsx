@@ -1,5 +1,6 @@
 import { useApolloClient } from '@apollo/client';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLogOutMutation, useMeQuery } from '../../generated/graphql';
 
@@ -11,10 +12,10 @@ const UserBox = styled.div`
   top: 15px;
   right: 15px;
 
-  p {
+  p, a {
     margin: 0 10px;
     color: #000000;
-    &:nth-child(2) {
+    &:nth-child(3) {
       cursor: pointer;
     }
   }
@@ -37,6 +38,7 @@ const User: React.FC<UserProps> = () => {
       ) : data?.me ? (
         <>
           <p>{data?.me?.username}</p>
+          <Link to='/'>Home</Link>
           <p onClick={handleClick}>Logout</p>
         </>
       ) : null}

@@ -40,6 +40,8 @@ const main = async () => {
     host: process.env.REDIS_HOST,
   });
 
+  app.set('trust proxy', 1)
+
   app.use(
     cors({
       origin: process.env.FRONTEND_URL,
@@ -59,7 +61,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         httpOnly: true,
         sameSite: 'lax',
-        secure: __prod__,
+        secure: false,
       },
       saveUninitialized: false,
       secret: process.env.SECRET!,

@@ -2,10 +2,11 @@
 .dockerignore
 .git
 .gitignore
-build/*
+dist/*
 Dockerfile
 docker-compose.yml
 node_modules
 npm-debug.log*
 yarn.lock
 README.md
+backup/

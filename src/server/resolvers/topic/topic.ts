@@ -1,11 +1,4 @@
-import {
-  Arg,
-  Ctx,
-  Int,
-  Mutation,
-  Query,
-  Resolver,
-} from 'type-graphql';
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql';
 import { Answer } from '../../entities/Answer';
 import { Position } from '../../entities/Position';
 import { Question } from '../../entities/Question';
@@ -51,6 +44,7 @@ export class TopicResolver {
     const positions = await Position.find({
       where: { ranking: ranking },
       relations: ['user'],
+      take: 25,
     });
 
     ranking!.positions = positions;
@@ -132,7 +126,7 @@ export class TopicResolver {
     const questions = await Question.createQueryBuilder()
       .where({ topic })
       .orderBy('RANDOM()')
-      .take(5)
+      .take(20)
       .getMany();
     return { questions };
   }
