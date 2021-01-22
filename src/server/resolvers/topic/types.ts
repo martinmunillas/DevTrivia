@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { FieldError } from '../../types';
 import { Topic } from '../../entities/Topic';
 import { Question } from '../../entities/Question';
@@ -32,4 +32,28 @@ export class RankingResponse {
 
   @Field(() => Topic, { nullable: true })
   topic?: Topic;
+}
+
+@ObjectType()
+export class Result {
+  @Field(() => Boolean)
+  correct?: boolean;
+
+  @Field(() => String)
+  message?: string;
+}
+
+@ObjectType()
+export class SendResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Int)
+  points?: number;
+
+  @Field(() => Int)
+  seconds?: number;
+
+  @Field(() => [Result], { nullable: true })
+  results?: Result[];
 }

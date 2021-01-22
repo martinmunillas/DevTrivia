@@ -1,66 +1,100 @@
-import React from 'react';
 import styled from 'styled-components';
-import { useGetQuestionQuery } from '../../generated/graphql';
-import { Button } from '../atoms/Button';
+import React from 'react';
 import { Title } from '../atoms/Title';
+import { parseTime } from '../../utils/funcs/parseTime';
+import { Button } from '../atoms/Button';
+import { useGetQuestionQuery } from '../../generated/graphql';
 
-const Box = styled.div`
+const Options = styled.p`
+  margin: 10px 0;
+  width: 100%;
+  border: 1px solid #fff;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
+const Selected = styled(Options)`
+  padding: 10px;
+  border: 3px solid #519ce6;
+  box-shadow: 1px 1px 21px -2px rgba(0, 0, 0, 0.69);
+`;
+
+const TimeLeft = styled.div<{ time: number }>`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: ${(props) => Math.min(props.time / 12, 100)}%;
+  background: rgb(247, 81, 118);
+  background: linear-gradient(
+    90deg,
+    rgba(247, 81, 118, 1) 0%,
+    rgba(181, 111, 248, 1) 100%
+  );
+  height: 30px;
+  border-radius: 50px;
+`;
+
+const Rounded = styled.div`
+  width: 100%;
+  border-radius: 50px;
+  overflow: hidden;
+  border: 5px solid #3f4768;
+  position: relative;
+
+  p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 interface QuestionProps {
-  next: () => void;
-  finish: () => void;
-  setSelected: (qid: number, aid: number) => void;
-  questions: number[];
-  page: number;
+  next: (prev?: number) => void;
+  setSelected: (aid: number) => void;
   selected: number;
+  time: number;
+  id: number;
+  skip: boolean;
 }
 
 const Question: React.FC<QuestionProps> = ({
-  page,
-  questions,
   next,
   setSelected,
   selected,
-  finish,
+  time,
+  id,
+  skip,
 }) => {
   const { data, loading } = useGetQuestionQuery({
-    variables: { id: questions[page - 1] },
-    skip: page === 0,
+    variables: { id },
+    skip,
   });
 
-  if (page !== 0) {
-    if (loading) return <Title>Loading...</Title>;
-    else if (!loading && !data?.getQuestion) return <Title>Not Found</Title>;
-  }
+  if (loading) return <Title>Loading...</Title>;
+  else if (!loading && !data?.getQuestion) return <Title>Not Found</Title>;
 
-  const isLastPage = page === questions.length;
-  const isFirstPage = page === 0;
-
-  return isFirstPage ? (
-    <Box>
-      <Title>Instructions</Title>
-      <p>You'll have 1.5 minutes per questions, there will be 20 questions total and </p>
-      <Button onClick={isLastPage ? finish : next} disabled={!selected}>
-        {isLastPage ? 'Finish' : 'Next 🡪'}
-      </Button>
-    </Box>
-  ) : (
-    <Box>
+  return (
+    <>
+      <Rounded>
+        <p>{parseTime(time)}</p>
+        <TimeLeft time={time}></TimeLeft>
+      </Rounded>
       <Title>{data?.getQuestion?.statement}</Title>
-      {data?.getQuestion?.answers.map((answer) => (
-        <p onClick={() => setSelected(data.getQuestion!.id, answer.id)}>
-          {answer.message}
-        </p>
-      ))}
-      <Button onClick={isLastPage ? finish : next} disabled={!selected}>
-        {isLastPage ? 'Finish' : 'Next 🡪'}
+      {data?.getQuestion?.answers.map((answer) =>
+        answer.id === selected ? (
+          <Selected key={answer.id}>{answer.message}</Selected>
+        ) : (
+          <Options key={answer.id} onClick={() => setSelected(answer.id)}>
+            {answer.message}
+          </Options>
+        )
+      )}
+      <Button onClick={() => next(id)} disabled={!selected}>
+        Next 🡪
       </Button>
-    </Box>
+    </>
   );
 };
 

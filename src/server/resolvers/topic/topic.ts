@@ -1,4 +1,11 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { Answer } from '../../entities/Answer';
 import { Position } from '../../entities/Position';
 import { Question } from '../../entities/Question';
@@ -6,7 +13,13 @@ import { Ranking } from '../../entities/Ranking';
 
 import { Topic } from '../../entities/Topic';
 import { MyContext } from '../../types';
-import { RankingResponse, TopicResponse, TriviaResponse } from './types';
+import {
+  RankingResponse,
+  Result,
+  SendResponse,
+  TopicResponse,
+  TriviaResponse,
+} from './types';
 
 @Resolver(Topic)
 export class TopicResolver {
@@ -20,7 +33,7 @@ export class TopicResolver {
 
   @Query(() => [Topic])
   async getTopics() {
-    return Topic.find();
+    return Topic.find({ relations: ['questions'] });
   }
 
   @Query(() => RankingResponse)
@@ -71,15 +84,14 @@ export class TopicResolver {
       topic,
       answers: [],
     }).save();
-    choices.forEach(async (choice, i) => {
+    for (let i = 0; i < choices.length; i++) {
       const answer = await Answer.create({
         isCorrect: i === 0,
         question,
-        message: choice,
+        message: choices[i],
       }).save();
       question.answers = [...question.answers!, answer];
-      console.log(question.answers);
-    });
+    }
     await Question.save(question);
     topic = await Topic.findOne({
       where: { id: topicId },
@@ -125,14 +137,14 @@ export class TopicResolver {
     return { questions };
   }
 
-  @Mutation(() => Int)
+  @Mutation(() => SendResponse)
   async sendResults(
     @Arg('topicId', () => Int) topicId: number,
     @Arg('seconds', () => Int) seconds: number,
     @Arg('questions', () => [Int]) questions: number[],
     @Arg('answers', () => [Int]) answers: number[],
     @Ctx() { req }: MyContext
-  ) {
+  ): Promise<SendResponse> {
     const topic = await Topic.findOne({
       where: { id: topicId },
       relations: ['ranking'],
@@ -140,30 +152,40 @@ export class TopicResolver {
     if (!topic) {
       return { errors: [{ field: 'topicId', message: 'Topic not found' }] };
     }
-    let position = await Position.findOne({where: {user: req.session.userId, ranking: topic!.ranking }})
+    let position = await Position.findOne({
+      where: { user: req.session.userId, ranking: topic!.ranking },
+    });
+
     let points = 0;
+    let results: Result[] = [];
+
     for (let i = 0; i < questions.length; i++) {
       const question = await Question.findOne({
         where: { id: questions[i] },
         relations: ['answers'],
       });
-      if (!question) {
-        return {
-          errors: [{ field: 'questions', message: 'Question not found' }],
-        };
-      }
-      if (answers[i] === question!.answers![0].id) {
+      if (answers[i] === question?.answers![0].id) {
         points++;
+        results[i] = { correct: true, message: question!.statement };
+      } else {
+        results[i] = { correct: false, message: question!.statement };
       }
     }
-    if(!position) {
-
-      await Position.create({ points, user: req.session.userId, ranking: topic!.ranking, seconds }).save();
-    } else if(position.points < points || position.points === points && position.seconds > seconds) {
-      position.points = points
-      position.seconds = seconds
-      Position.save(position)
+    if (!position) {
+      await Position.create({
+        points,
+        user: req.session.userId,
+        ranking: topic!.ranking,
+        seconds,
+      }).save();
+    } else if (
+      position.points < points ||
+      (position.points === points && position.seconds > seconds)
+    ) {
+      position.points = points;
+      position.seconds = seconds;
+      Position.save(position);
     }
-    return points;
+    return { points, results, seconds };
   }
 }

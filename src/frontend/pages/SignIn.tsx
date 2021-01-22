@@ -27,11 +27,10 @@ const SignIn: React.FC<SignInProps> = ({}) => {
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
     const response = await login({ variables: form });
     if (!response.data?.login.errors) {
       setForm(initalState);
-      apolloClient.resetStore();
+      await apolloClient.resetStore();
       router.push('/');
     } else {
       setError(mapError(response.data?.login.errors));

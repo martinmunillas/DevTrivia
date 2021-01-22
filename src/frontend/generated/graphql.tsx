@@ -112,7 +112,7 @@ export type Mutation = {
   createTopic: TopicResponse;
   insertQuestion: TopicResponse;
   deleteQuestion: Scalars['Boolean'];
-  sendResults: Scalars['Int'];
+  sendResults: SendResponse;
 };
 
 
@@ -172,6 +172,20 @@ export type TopicResponse = {
   __typename?: 'TopicResponse';
   errors?: Maybe<Array<FieldError>>;
   topic?: Maybe<Topic>;
+};
+
+export type SendResponse = {
+  __typename?: 'SendResponse';
+  errors?: Maybe<Array<FieldError>>;
+  points: Scalars['Int'];
+  seconds: Scalars['Int'];
+  results?: Maybe<Array<Result>>;
+};
+
+export type Result = {
+  __typename?: 'Result';
+  correct: Scalars['Boolean'];
+  message: Scalars['String'];
 };
 
 export type GenerateTriviaQueryVariables = Exact<{
@@ -273,7 +287,14 @@ export type SendResultsMutationVariables = Exact<{
 
 export type SendResultsMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'sendResults'>
+  & { sendResults: (
+    { __typename?: 'SendResponse' }
+    & Pick<SendResponse, 'seconds' | 'points'>
+    & { results?: Maybe<Array<(
+      { __typename?: 'Result' }
+      & Pick<Result, 'correct' | 'message'>
+    )>> }
+  ) }
 );
 
 export type LogInMutationVariables = Exact<{
@@ -539,7 +560,14 @@ export const SendResultsDocument = gql`
     questions: $questions
     answers: $answers
     seconds: $seconds
-  )
+  ) {
+    seconds
+    points
+    results {
+      correct
+      message
+    }
+  }
 }
     `;
 export type SendResultsMutationFn = Apollo.MutationFunction<SendResultsMutation, SendResultsMutationVariables>;

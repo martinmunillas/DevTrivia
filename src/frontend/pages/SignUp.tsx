@@ -28,11 +28,10 @@ const SignUp: React.FC<SignUpProps> = ({}) => {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
     const response = await signup({ variables: form });
     if (!response.data?.register.errors) {
       setForm(initalState);
-      apolloClient.resetStore();
+      await apolloClient.resetStore();
       router.push('/');
     } else {
       setError(mapError(response.data?.register.errors));

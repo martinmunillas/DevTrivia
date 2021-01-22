@@ -1,6 +1,9 @@
 # DevTrivia
 Just the best trivia for every software engineer
 
+## Stack
+Tyescript, React, Graphql, ApolloClient, Docker, PostgresQL, Redis
+
 ### Requirements:
 
  - Docker
@@ -16,19 +19,19 @@ Just the best trivia for every software engineer
 ##### Other commentaries:
 
  - To see the app logs run ```docker-compose logs -f```
+ - This was a project created for Nicolas Schurman's Challenge https://www.youtube.com/watch?v=aouDQ8caJYg
+  - UI inspired by https://dribbble.com/shots/6508352-Quiz-App-UI-Oma/attachments/6508352-Quiz-App-UI-Oma?mode=media 
 
  #### TODO:
 
- - [X] SignIn/SignUp
+ [X] SignIn/SignUp
 
- - [X] Topics
+ [X] Topics
 
- - [X] Create Questions
+ [x] Answer 20 Questions
 
- - [] Answer 20 Questions
+ [x] Congrats Message
 
- - [] Congrats Message
+ [x] Total Time
 
- - [] Total Time
-
- - [] Ranking
+ [x] Ranking

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
+import { parseTime } from '../../utils/funcs/parseTime';
 
 const Style = styled.div`
   display: flex;
@@ -21,13 +22,7 @@ interface PositionProps {
 }
 
 const Position: React.FC<PositionProps> = ({ user, points, seconds, pos }) => {
-  const parseTime = (s: number) => {
-    let sec = 0;
-    let min = 0;
-    sec = s % 60;
-    min = parseInt((s / 60).toString());
-    return min + 'm' + sec + 's';
-  };
+  
 
   return (
     <Style>

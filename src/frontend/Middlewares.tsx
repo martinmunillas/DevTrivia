@@ -1,12 +1,14 @@
-import React from 'react'
+import React from 'react';
+import RequireAuth from './components/middlewares/RequireAuth';
 
-interface MiddlewaresProps {
-
-}
+interface MiddlewaresProps {}
 
 const Middlewares: React.FC<MiddlewaresProps> = ({}) => {
-        return (<></>);
-}
+  return (
+    <>
+      <RequireAuth />
+    </>
+  );
+};
 
-
-export default Middlewares
+export default Middlewares;

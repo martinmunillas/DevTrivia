@@ -12,6 +12,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Ranking from './pages/Ranking';
 import Trivia from './pages/Trivia';
+import User from './components/organisms/User';
 
 const history = createBrowserHistory();
 
@@ -30,6 +31,7 @@ const App = () => {
             <GlobalStyle />
             <BrowserRouter>
               <Middlewares />
+              <User />
               <Switch>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/sign-in' component={SignIn} />
