@@ -9,7 +9,7 @@ interface InstructionsProps {
 const Instructions: React.FC<InstructionsProps> = ({ finish }) => {
   return (
     <>
-      <Title>Congratulations, you finished finished🎉!</Title>
+      <Title>Congratulations, you finished🎉!</Title>
       <Button onClick={finish}>See results</Button>
     </>
   );
